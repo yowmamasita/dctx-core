@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -11,11 +10,11 @@ import (
 )
 
 func main() {
-	fmt.Println("Starting...")
+	log.Print("Starting")
 
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file", err)
+		log.Print(err)
 	}
 
 	uri := os.Getenv("DCTX_CORE_NEO4J_URI")
@@ -25,5 +24,5 @@ func main() {
 	repo := locationRepo.New(uri, username, password, false) // FIXME: should be true in prod
 	repo.Match()                                             // TODO: remove this test code
 
-	fmt.Println("Finished.")
+	log.Print("Finished")
 }
