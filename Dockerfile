@@ -1,5 +1,4 @@
-# builder
-FROM ubuntu:18.04 as builder
+FROM ubuntu:18.04
 RUN apt-get update \
     && apt-get install -y software-properties-common \
     && add-apt-repository -y ppa:longsleep/golang-backports
@@ -12,7 +11,4 @@ COPY Makefile go.mod go.sum ./
 RUN make download
 ADD . .
 RUN make build
-# app
-#FROM ubuntu:18.04
-#COPY --from=builder /build/core .
 CMD ["./core"]
