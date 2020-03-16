@@ -1,0 +1,30 @@
+version: "3.7"
+
+networks:
+  dctx:
+    name: dctx
+services:
+  core:
+    depends_on:
+      - db
+    build: .
+    command: sh -c 'wget https://raw.githubusercontent.com/eficode/wait-for/master/wait-for && chmod +x wait-for && ./wait-for db:7474 -- ./core'
+    environment:
+      - DCTX_CORE_NEO4J_URI=bolt://db:7687
+      - DCTX_CORE_NEO4J_USERNAME=neo4j
+      - DCTX_CORE_NEO4J_PASSWORD=dctx
+    networks:
+      - dctx
+  db:
+    image: neo4j
+    environment:
+      - NEO4J_AUTH=neo4j/dctx
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - dbdata:/data
+    networks:
+      - dctx
+volumes:
+  dbdata:
